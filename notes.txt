@@ -41,3 +41,25 @@
         context.SaveChanges();
 
    var x=  stopWatch.ElapsedMilliseconds;
+
+   Open Telemetry Implementation
+   nuget => OpenTelemetry , 
+            OpenTelemetry.Exporter.OpenTelemetryProtocol ( 4317 portuna gRPS uzerinde  gonderir. Elastic, Jeager(4317), aliriz. )
+            OpenTelemetry.Extensions.Hosting;
+
+
+            OpenTelemetry.Instrumentation.AspNetCore =>  Request-response zamanini olcer.
+            OpenTelemetry.Instrumentation.EntityFrameworkCore =>  Ef core islemleri zamanini olcer.
+            OpenTelemetry.Instrumentation.Http =>  HttpClient ismlerinin zamanini olcer.
+            OpenTelemetry.Instrumentation.StacExchangeRedis =>  Redis ismlerinin zamanini olcer.            
+
+
+
+Trace Data=>
+Span = Activity (.Net Ecosystem - System.Diagnostics Namespace)
+
+
+.Net => Activity (System.Diagnostics) .Net'e ozel bir yapi.(OpenTelemetry'yi 100% kullanmayiz.)
+Open Telemetry => Span (Java, Python 'da ozel bir kutuphane yok.)
+
+TraceId = CorelationId => Get istegindeki islemleri birbiriyle iliskilendirmek icin kullanili.r.

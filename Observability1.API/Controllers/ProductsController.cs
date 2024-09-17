@@ -24,14 +24,27 @@ public class ProductsController(ILogger<ProductsController> logger,ILoggerFactor
     [HttpPost]
     public IActionResult Post()
     {
-
         context.Products.Add(new Product() { Name = "kalem 1", Price = 300 });
         context.SaveChanges();
-
 
         httpClient.GetAsync("https://www.google.com");
 
         distributedCache.SetString("userId", "123");
+
+
+        //Instrumentation olursa activity kullanmaya gerek yok!
+        //using (var activity = ActivitySourceProvider.ActivitySource.StartActivity("SqlServerOpeation"))
+        //{
+        //    context.Products.Add(new Product() { Name = "kalem 1", Price = 300 });
+        //    context.SaveChanges();
+        //}
+        //using (var activity = ActivitySourceProvider.ActivitySource.StartActivity("HttpClientOperation"))
+        //{
+        //    activity.SetTag("schema", "https");
+        //    httpClient.GetAsync("https://www.google.com");
+        //}
+
+        // distributedCache.SetString("userId", "123");
 
         //var orderCode = 123;
         //var userId = 5;
