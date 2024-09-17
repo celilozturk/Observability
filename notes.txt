@@ -1,0 +1,4 @@
+ log =>send logs with Serilog , Nlog //Don't use it on new Projects ()
+ Gunumuzde => openTelemetry(Defacto) Log,Trace,Metric   Azure App Insight, Prometheus, Elastic, Graphana
+
+ 

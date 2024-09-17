@@ -5,11 +5,16 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "microservice1", "microservice1", "{C05A069A-8D17-458C-9A72-3A9C1C4A807D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Observability1.API", "Observability1.API\Observability1.API.csproj", "{5F4CCCBA-1127-4C30-B03D-D526A456894A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Observability1.API", "Observability1.API\Observability1.API.csproj", "{5F4CCCBA-1127-4C30-B03D-D526A456894A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "microservice2", "microservice2", "{B1AFE685-3507-4906-89EA-727FBD0AD82D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Observability2.API", "Observability2.API\Observability2.API.csproj", "{A215E450-823C-4C50-8C34-132C5EEFB0B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Observability2.API", "Observability2.API\Observability2.API.csproj", "{A215E450-823C-4C50-8C34-132C5EEFB0B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7100BDE3-7836-489E-B728-2CEBA3B3964D}"
+	ProjectSection(SolutionItems) = preProject
+		notes.txt = notes.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
