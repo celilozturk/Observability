@@ -1,4 +1,43 @@
  log =>send logs with Serilog , Nlog //Don't use it on new Projects ()
  Gunumuzde => openTelemetry(Defacto) Log,Trace,Metric   Azure App Insight, Prometheus, Elastic, Graphana
+ Open telemetry (Log uretmez, TraceId gibi degerleri ekler!).net , java kendi formatinda log uretir.
 
- 
+ Trace=> Bir operasyon hakkinda bilgi, Redise gitmek, db'ye gitmek sorgular etc.
+ OpenTelemtry (For Microservice echosystems)
+ Metric => Prometheus
+ Trace => Elastic
+ Log => Elastic
+
+ OpenTelemetry
+ =>
+ 4317 uzerinden gRPC ile gider (Binary)  => Jaeger gRPC
+ 4318 userinden Http
+
+ Aspire => Development Tool (Microsoft Ducumentation )
+
+ APM(Application Performans Monitoring)
+ Azure Application Insight (Priced)
+ Elastic APM (Log, Trace, Metric)
+ New Relic(SAAS) (Priced)
+ Ziplin (Trace, Metric)
+ Jaeger (Trace, Metric)
+
+ Log, Trace => Elastic => Elastic APM + Kibana
+ Metric (Time series data)=> Prometheus
+
+
+ JAEGER IMplementation
+ Jaeger uzerinde
+ 4317, 4318, 16686 (UI) portlari acik olmalidir!
+
+  docker run --name jaeger -p 4317:4317 -p 16686:16686 jaegertracing/all-in-one:1.60
+
+  https://www.jaegertracing.io/docs/1.61/getting-started/
+
+
+  Eski yontem=> Bir islemi olcmek icin kullanilir
+    var stopWatch=Stopwatch.StartNew();
+        context.Products.Add(new Product() { Name = "kalem 1", Price = 300 });
+        context.SaveChanges();
+
+   var x=  stopWatch.ElapsedMilliseconds;
