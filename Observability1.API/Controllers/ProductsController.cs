@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Observability1.API.Models;
+using Observability1.API.Services;
+using Shared.Bus;
 using System.Diagnostics;
 
 namespace Observability1.API.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class ProductsController(ILogger<ProductsController> logger,ILoggerFactory loggerFactory,AppDbContext context , IDistributedCache distributedCache) : ControllerBase
+public class ProductsController(ILogger<ProductsController> logger,ILoggerFactory loggerFactory,AppDbContext context , IDistributedCache distributedCache,IPublishEndpoint publishEndpoint, StockService stockService) : ControllerBase
 {
     private static HttpClient httpClient = new HttpClient();
 
@@ -22,15 +25,32 @@ public class ProductsController(ILogger<ProductsController> logger,ILoggerFactor
         return Ok("Products");
     }
     [HttpPost]
-    public IActionResult Post()
+    public async Task<IActionResult> Post()
     {
         context.Products.Add(new Product() { Name = "kalem 1", Price = 300 });
         context.SaveChanges();
 
-        httpClient.GetAsync("https://www.google.com");
+        //httpClient.GetAsync("https://www.google.com");
 
         distributedCache.SetString("userId", "123");
 
+        using(var activity = ActivitySourceProvider.ActivitySource.StartActivity("File(app.txt)"))
+        {
+            activity.SetTag("userId", "123");
+        await System.IO.File.WriteAllTextAsync("app.txt", "Merhaba Dunya");
+        }
+
+        //MassTransit 8.0 artik gerek yok!
+        await publishEndpoint.Publish(new ProductAddedEvent(1, "kalemler", 20));
+
+        var result = await stockService.GetStock();
+
+
+        //Masstransit 8 versiyonundan once kullaniliyordu
+        //using (var activity = ActivitySourceProvider.ActivitySource.StartActivity("queue publish(productaddedevent)"))
+        //{
+        //    await publishEndpoint.Publish(new ProductAddedEvent(1, "kalemler", 20));
+        //}
 
         //Instrumentation olursa activity kullanmaya gerek yok!
         //using (var activity = ActivitySourceProvider.ActivitySource.StartActivity("SqlServerOpeation"))
@@ -56,6 +76,7 @@ public class ProductsController(ILogger<ProductsController> logger,ILoggerFactor
 
         //logger.LogError("kullanici giris yapamadi!");
         //logger.LogError("kullanici giris yapamadi. Kulllanici sifresinde, two Factor flag-false oldugunda dolayi etc ....");
-        return StatusCode(StatusCodes.Status201Created);
+        //return StatusCode(StatusCodes.Status201Created);
+        return Ok(result);
     }
 }

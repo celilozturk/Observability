@@ -63,3 +63,18 @@ Span = Activity (.Net Ecosystem - System.Diagnostics Namespace)
 Open Telemetry => Span (Java, Python 'da ozel bir kutuphane yok.)
 
 TraceId = CorelationId => Get istegindeki islemleri birbiriyle iliskilendirmek icin kullanili.r.
+
+MassTransit => RabbitMq 
+IPublishEndpoint => exchange gondermek icin!
+ISendEndpoint => Direct kuyruga gondermek icin!
+
+NOT: Masstransit 8 ile birlikte OpenTelemetri destegi geldi! Masstransit icinde Instrumentation geliyor!!
+ sadece program.cs opentelemetriye bunu ekle  =>
+ x.AddSource(DiagnosticHeaders.DefaultListenerName);
+
+
+( Distributed Tracing )
+ ## Iki servis arasindaki ilisti ve TraceId durumu ###
+
+ Request Header'ina openTelemetry ile otomatik TraceId eklenir.
+
