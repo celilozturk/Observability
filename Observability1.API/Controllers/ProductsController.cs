@@ -15,8 +15,11 @@ public class ProductsController(ILogger<ProductsController> logger,ILoggerFactor
     private static HttpClient httpClient = new HttpClient();
 
     [HttpGet]
-    public IActionResult Get()
+    public async Task<IActionResult> Get()
     {
+        await publishEndpoint.Publish(new ProductAddedEvent(1, "kalemler", 20, Activity.Current!.TraceId.ToString()));
+        var result = await stockService.GetStock();
+
         //var orderLogger= loggerFactory.CreateLogger("Order.API.ProductController");
         //orderLogger.LogInformation("Get Mothodu cagrildi(loggerFactory)");
         //logger.LogInformation("Get Methodu cagrildi!(logger)"); // Type Safe better
@@ -36,12 +39,12 @@ public class ProductsController(ILogger<ProductsController> logger,ILoggerFactor
 
         using(var activity = ActivitySourceProvider.ActivitySource.StartActivity("File(app.txt)"))
         {
-            activity.SetTag("userId", "123");
+            activity!.SetTag("userId", "123");
         await System.IO.File.WriteAllTextAsync("app.txt", "Merhaba Dunya");
         }
-
+        //Activity.Current.ParentId
         //MassTransit 8.0 artik gerek yok!
-        await publishEndpoint.Publish(new ProductAddedEvent(1, "kalemler", 20));
+        await publishEndpoint.Publish(new ProductAddedEvent(1, "kalemler", 20,Activity.Current!.TraceId.ToString()));
 
         var result = await stockService.GetStock();
 

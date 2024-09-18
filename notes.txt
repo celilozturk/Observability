@@ -78,3 +78,6 @@ NOT: Masstransit 8 ile birlikte OpenTelemetri destegi geldi! Masstransit icinde 
 
  Request Header'ina openTelemetry ile otomatik TraceId eklenir.
 
+ Kuyruk sistemlerinde distributed tracing
+ -Eger kuyruk sisteminde Header varsa orada tasiyacagiz. Yoksa Payload(kuyruk mesajinda) tasiyacagiz.
+ MassTransit Producer ve Consumer uzerinde bunu otomatik ekleyip okuyabiliyor.

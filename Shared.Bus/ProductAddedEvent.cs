@@ -5,4 +5,4 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Shared.Bus;
-public record ProductAddedEvent(int Id, string Name, decimal Price);
+public record ProductAddedEvent(int Id, string Name, decimal Price,string TraceId);
