@@ -1,6 +1,8 @@
 using MassTransit;
 using MassTransit.Logging;
 using Observability2.API.Consumers;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
@@ -37,7 +39,18 @@ builder.Services.AddOpenTelemetry().WithTracing(tracing =>
 
     tracing.AddOtlpExporter();
     tracing.AddAspNetCoreInstrumentation();
-});
+}).WithLogging(logging =>
+{
+    logging.AddOtlpExporter();
+    logging.ConfigureResource(rb => rb.AddService("Observability2.API", serviceVersion: "1.0")); //resourse builder rb
+
+}).WithMetrics(metrics =>
+{
+    metrics.AddProcessInstrumentation();
+    metrics.AddRuntimeInstrumentation();
+    metrics.ConfigureResource(rb => rb.AddService("Observability2.API", serviceVersion: "1.0")); //resourse builder rb
+    metrics.AddOtlpExporter();
+}); ; 
 
 var app = builder.Build();
 

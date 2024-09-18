@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Observability1.API;
 using Observability1.API.Models;
 using Observability1.API.Services;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using StackExchange.Redis;
@@ -47,6 +49,17 @@ builder.Services.AddOpenTelemetry().WithTracing(x =>
 
     x.AddConsoleExporter();
     x.AddOtlpExporter(); //native 4317 gRPC uzerinde gonderir(Jeager dan gormek icin)
+}).WithLogging(logging =>
+{
+   logging.AddOtlpExporter();
+   logging.ConfigureResource(rb => rb.AddService("Observability.API", serviceVersion: "1.0")); //resourse builder rb
+
+}).WithMetrics(metrics =>
+{
+    metrics.AddProcessInstrumentation();
+    metrics.AddRuntimeInstrumentation();
+    metrics.ConfigureResource(rb => rb.AddService("Observability.API", serviceVersion: "1.0")); //resourse builder rb
+    metrics.AddOtlpExporter();
 });
 
 builder.Services.AddHttpClient<StockService>(x =>

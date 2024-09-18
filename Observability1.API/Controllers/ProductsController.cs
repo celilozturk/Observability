@@ -30,6 +30,7 @@ public class ProductsController(ILogger<ProductsController> logger,ILoggerFactor
     [HttpPost]
     public async Task<IActionResult> Post()
     {
+        logger.LogInformation("Products => Post Methodu basladi");
         context.Products.Add(new Product() { Name = "kalem 1", Price = 300 });
         context.SaveChanges();
 
@@ -80,6 +81,9 @@ public class ProductsController(ILogger<ProductsController> logger,ILoggerFactor
         //logger.LogError("kullanici giris yapamadi!");
         //logger.LogError("kullanici giris yapamadi. Kulllanici sifresinde, two Factor flag-false oldugunda dolayi etc ....");
         //return StatusCode(StatusCodes.Status201Created);
+        logger.LogInformation("Products => Post Methodu bitti!");
+        logger.LogInformation("Siparis olustu(OrderCode={orderCode})(UserId={userId})", "abc", "123");
+
         return Ok(result);
     }
 }
