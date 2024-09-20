@@ -1,6 +1,7 @@
 using MassTransit;
 using MassTransit.Logging;
 using Observability2.API.Consumers;
+using Observability2.API.Extensions;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -8,49 +9,17 @@ using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// MassTransit Configuration
+builder.Services.AddMassTransitConfiguration();
+
+// OpenTelemetry Configuration
+builder.Services.AddOpenTelemetryConfiguration();
+
+
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMassTransit(x =>
-{
-    x.AddConsumer<ProductAddedEventConsumer>();
-    x.UsingRabbitMq((context, cfg) =>
-    {
-        cfg.Host("localhost", "/", h =>
-        {
-            h.Username("guest");
-            h.Password("guest");
-        });
-        cfg.ReceiveEndpoint("observability2-prodct.created.event-queue", e =>
-        {
-            e.ConfigureConsumer<ProductAddedEventConsumer>(context);
-        });
-    });
-});
-
-builder.Services.AddOpenTelemetry().WithTracing(tracing =>
-{
-    tracing.AddSource(DiagnosticHeaders.DefaultListenerName);
-    tracing.AddSource("Observability2.API.ActivitySource");
-    tracing.ConfigureResource(rb => rb.AddService("Observability2.API", serviceVersion: "1.0")); //resourse builder rb
-
-    tracing.AddOtlpExporter();
-    tracing.AddAspNetCoreInstrumentation();
-}).WithLogging(logging =>
-{
-    logging.AddOtlpExporter();
-    logging.ConfigureResource(rb => rb.AddService("Observability2.API", serviceVersion: "1.0")); //resourse builder rb
-
-}).WithMetrics(metrics =>
-{
-    metrics.AddProcessInstrumentation();
-    metrics.AddRuntimeInstrumentation();
-    metrics.ConfigureResource(rb => rb.AddService("Observability2.API", serviceVersion: "1.0")); //resourse builder rb
-    metrics.AddOtlpExporter();
-}); ; 
 
 var app = builder.Build();
 
